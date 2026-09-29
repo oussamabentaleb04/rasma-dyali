@@ -9,8 +9,15 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-black border-bottom border-secondary">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ route('home') }}">🎨 Rasma Dyali</a>
-        <div class="d-flex gap-2 align-items-center ms-auto">
+                <a class="navbar-brand fw-bold" href="{{ route('home') }}">🎨 Rasma Dyali</a>
+        <div class="d-flex gap-3 me-auto ms-4">
+            <a class="nav-link text-light" href="{{ route('patterns.gallery') }}">Gallery</a>
+            @auth
+                <a class="nav-link text-light" href="{{ route('generator.index') }}">Generator</a>
+                <a class="nav-link text-light" href="{{ route('patterns.mine') }}">My patterns</a>
+            @endauth
+        </div>
+        <div class="d-flex gap-2 align-items-center">
             @auth
                 <span class="text-secondary small">{{ auth()->user()->name }} ({{ auth()->user()->role }})</span>
                 <a class="btn btn-sm btn-outline-light" href="{{ route('dashboard') }}">Dashboard</a>
