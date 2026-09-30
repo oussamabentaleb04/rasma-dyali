@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminPatternController;
 use App\Http\Controllers\GeneratorController;
 use App\Http\Controllers\PatternController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/patterns/{pattern}', [PatternController::class, 'destroy'])->name('patterns.destroy');
     Route::post('/patterns/{pattern}/like', [PatternController::class, 'like'])->name('patterns.like');
 
-    Route::get('/admin', [DashboardController::class, 'admin'])
-        ->name('admin.dashboard')
-        ->middleware('role:admin');
+        Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [DashboardController::class, 'admin'])->name('dashboard');
+        Route::get('/patterns', [AdminPatternController::class, 'index'])->name('patterns.index');
+        Route::post('/patterns/{pattern}/feature', [AdminPatternController::class, 'toggleFeatured'])->name('patterns.toggleFeatured');
+        Route::post('/patterns/{pattern}/public', [AdminPatternController::class, 'togglePublic'])->name('patterns.togglePublic');
+        Route::delete('/patterns/{pattern}', [AdminPatternController::class, 'destroy'])->name('patterns.destroy');
+    });
 });

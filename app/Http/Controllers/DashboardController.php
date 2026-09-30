@@ -25,13 +25,14 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function admin()
+       public function admin()
     {
         return view('dashboards.admin', [
             'usersCount' => User::count(),
             'patternsCount' => Pattern::count(),
             'publicPatternsCount' => Pattern::where('is_public', true)->count(),
             'featuredCount' => Pattern::where('is_featured', true)->count(),
+            'topPatterns' => Pattern::orderByDesc('likes_count')->take(5)->get(),
         ]);
     }
 }

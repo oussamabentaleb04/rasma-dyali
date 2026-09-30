@@ -32,6 +32,19 @@
         </div>
     </div>
 </nav>
+
+@auth
+    @if(auth()->user()->role === 'admin')
+        <div class="border-bottom border-secondary bg-body-tertiary">
+            <div class="container d-flex gap-3 flex-wrap py-2 small">
+                <span class="text-secondary">Admin</span>
+                <a class="text-warning text-decoration-none" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                <a class="text-warning text-decoration-none" href="{{ route('admin.patterns.index') }}">Patterns</a>
+            </div>
+        </div>
+    @endif
+@endauth
+
 <main class="container py-5">
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
