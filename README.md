@@ -1,58 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎨 Rasma Dyali
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A generative pattern designer for Moroccan zellige-style art. Pick a symmetry, a motif, and a color palette, and watch a full geometric pattern draw itself live on canvas — no page reloads, no waiting. Save it to a public gallery, like other people's designs, or just download the PNG and go.
 
-## About Laravel
+Unlike a typical CRUD app, the core of this project is client-side generative art: real-time Canvas rendering driven by rotational symmetry math (4-fold, 6-fold, 8-fold), not database-driven forms.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📸 Screenshots
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**User dashboard**
+![Dashboard](docs/screenshots/dashboard.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Pattern generator — live canvas**
+![Generator](docs/screenshots/generator.png)
 
-## Learning Laravel
+**Public gallery**
+![Gallery](docs/screenshots/gallery.png)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Admin — pattern moderation**
+![Admin patterns](docs/screenshots/admin-patterns.png)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Admin dashboard**
+![Admin dashboard](docs/screenshots/admin-dashboard.png)
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## ✨ Features
 
-## Agentic Development
+- 🎨 **Live Canvas generator**: every control (symmetry, motif, grid density, colors) redraws the pattern instantly in the browser, with no server round-trip
+- 🔄 **Rotational symmetry engine**: 4-fold, 6-fold and 8-fold patterns built from a single motif reflected and rotated into a full rosette — real geometry, not a static image swap
+- 🖌️ **Four motif types**: star, diamond, knot, and floral, each drawn with its own Canvas path logic
+- 🎲 **Randomize**: instant inspiration with one click
+- 🌈 **Traditional color presets**: Fès blue, Marrakech red, Chefchaouen blue, alongside free color pickers
+- ⬇️ **PNG download**: export any pattern straight from the canvas, no account required
+- 🖼️ **Public gallery**: save a pattern to share it, browse others', like your favorites
+- 👑 **Admin moderation**: feature, hide, or delete any pattern; dashboard with top-liked patterns
+- 🛡️ **Security**: rate-limited login, server-side role enforcement, one-like-per-user enforced at the database level
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🛠️ Tech stack
+
+| Technology | Usage |
+|---|---|
+| Laravel 13 | Backend: auth, gallery, admin |
+| PHP 8.3 | Language runtime |
+| MySQL | Database |
+| Blade | Server-rendered views |
+| Bootstrap 5 | UI framework |
+| Vanilla JavaScript + Canvas API | Live pattern rendering (no framework, no build step) |
+
+## 🚀 Installation
 
 ```bash
-composer require laravel/boost --dev
+# Clone the project
+git clone https://github.com/oussamabentaleb04/rasma-dyali.git
+cd rasma-dyali
 
-php artisan boost:install
+# Install dependencies
+composer install
+
+# Configure environment
+cp .env.example .env
+php artisan key:generate
+
+# Set your database credentials in .env, then:
+php artisan migrate --seed
+
+# Run it
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Visit `http://127.0.0.1:8000`.
 
-## Contributing
+## 🔑 Test accounts
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The seeder creates three demo accounts:
 
-## Code of Conduct
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@rasmadyali.com | Admin@12345 |
+| User | oussama@rasmadyali.com | Password@123 |
+| User | amina@rasmadyali.com | Password@123 |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+⚠️ These are local development credentials only — never use them on a public deployment.
 
-## Security Vulnerabilities
+## 📁 Project structure
+app/
+├── Http/Controllers/ # Auth, Generator, Pattern, Admin*, Dashboard
+├── Http/Middleware/ # RoleMiddleware (role-based access control)
+├── Models/ # User, Pattern, PatternLike
+database/
+├── migrations/ # users, patterns, pattern_likes
+└── seeders/ # Demo users and sample patterns
+public/js/
+└── pattern-renderer.js # The Canvas symmetry-drawing engine, shared by every view
+resources/views/
+├── generator/ # The live pattern designer
+├── patterns/ # Gallery, detail page, "my patterns"
+├── admin/patterns/ # Moderation table
+routes/web.php # All application routes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 👨‍💻 Author
 
-## License
+**Oussama Bentaleb**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+🐙 [GitHub](https://github.com/oussamabentaleb04)
+
+## 📄 License
+
+This is a personal portfolio project, built for learning purposes.
